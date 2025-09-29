@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/devang/Gitartha-Engine/internal/data"
 )
@@ -30,6 +32,11 @@ func NewRouter(store *data.Store) *gin.Engine {
 		v1.GET("/search", h.searchVerses)
 		v1.GET("/random", h.randomVerse)
 	}
+
+	// Swagger documentation routes (static spec)
+	r.StaticFile("/openapi/swagger.json", "./docs/swagger.json")
+	r.StaticFile("/openapi/swagger.yaml", "./docs/swagger.yaml")
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.URL("/openapi/swagger.json")))
 
 	return r
 }

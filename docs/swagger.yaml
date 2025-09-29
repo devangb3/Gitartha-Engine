@@ -1,0 +1,232 @@
+definitions:
+  data.Verse:
+    properties:
+      chapter_id:
+        type: integer
+      english:
+        type: string
+      hindi:
+        type: string
+      id:
+        type: string
+      sanskrit:
+        type: string
+      transliteration:
+        type: string
+      verse_number:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/chapters:
+    get:
+      description: Get a list of all 18 chapters with their metadata
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'chapters: array of chapter objects'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: 'error: internal server error'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: List All Chapters
+      tags:
+      - Chapters
+  /api/v1/chapters/{chapter}:
+    get:
+      description: Get chapter metadata along with all its verses
+      parameters:
+      - description: Chapter number (1-18)
+        in: path
+        name: chapter
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'chapter: chapter object, verses: array of verse objects'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'error: invalid chapter number'
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: 'error: not found'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: 'error: internal server error'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Chapter with Verses
+      tags:
+      - Chapters
+  /api/v1/chapters/{chapter}/verses:
+    get:
+      description: Get all verses for a specific chapter
+      parameters:
+      - description: Chapter number (1-18)
+        in: path
+        name: chapter
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'chapter: chapter number, verses: array of verse objects'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'error: invalid chapter number'
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: 'error: not found'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: 'error: internal server error'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: List Chapter Verses
+      tags:
+      - Verses
+  /api/v1/chapters/{chapter}/verses/{verse}:
+    get:
+      description: Get a specific verse with all its translations
+      parameters:
+      - description: Chapter number (1-18)
+        in: path
+        name: chapter
+        required: true
+        type: integer
+      - description: Verse number within the chapter
+        in: path
+        name: verse
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: verse object with all translations
+          schema:
+            $ref: '#/definitions/data.Verse'
+        "400":
+          description: 'error: invalid chapter or verse number'
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: 'error: not found'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: 'error: internal server error'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Specific Verse
+      tags:
+      - Verses
+  /api/v1/random:
+    get:
+      description: Get a randomly selected verse from the Bhagavad Gita
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: random verse object with all translations
+          schema:
+            $ref: '#/definitions/data.Verse'
+        "404":
+          description: 'error: not found'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: 'error: internal server error'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Random Verse
+      tags:
+      - Random
+  /api/v1/search:
+    get:
+      description: Search verses by keyword in English or Hindi
+      parameters:
+      - description: Search query (minimum 2 characters)
+        in: query
+        name: query
+        required: true
+        type: string
+      - default: en
+        description: Language for search (en or hi)
+        in: query
+        name: lang
+        type: string
+      - default: 20
+        description: Maximum number of results (1-100)
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'results: array of verse objects'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'error: invalid search parameters'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: 'error: internal server error'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Search Verses
+      tags:
+      - Search
+  /healthz:
+    get:
+      description: Check the health status of the API service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status: ok, timestamp: UTC datetime'
+          schema:
+            additionalProperties: true
+            type: object
+        "503":
+          description: 'status: unhealthy, error: description'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Health Check
+      tags:
+      - System
+swagger: "2.0"

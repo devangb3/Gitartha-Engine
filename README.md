@@ -64,6 +64,12 @@ Visit `http://localhost:8080/healthz` to confirm the service is healthy.
 - `GET /api/v1/search?query=term&lang=en|hi` — Keyword search (English/Hindi).
 - `GET /api/v1/random` — Random verse.
 
+### Interactive API Documentation
+The API includes interactive Swagger/OpenAPI documentation:
+- **Swagger UI**: Visit `http://localhost:8080/swagger/index.html` for interactive API documentation
+- **OpenAPI Spec**: `http://localhost:8080/swagger/doc.json` (JSON format)
+- **OpenAPI YAML**: `http://localhost:8080/swagger/swagger.yaml` (YAML format)
+
 Use tools like `curl`, Postman, or `httpie` to exercise the endpoints:
 ```bash
 curl http://localhost:8080/api/v1/chapters/1/verses/1
