@@ -9,7 +9,6 @@ import (
     _ "github.com/jackc/pgx/v5/stdlib"
 )
 
-// New creates a PostgreSQL connection pool using the provided DSN.
 func New(dsn string) (*sql.DB, error) {
     db, err := sql.Open("pgx", dsn)
     if err != nil {

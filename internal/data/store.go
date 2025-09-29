@@ -7,17 +7,14 @@ import (
 	"fmt"
 )
 
-// Store wraps database operations for chapters and verses.
 type Store struct {
 	db *sql.DB
 }
 
-// NewStore constructs a Store with the provided database handle.
 func NewStore(db *sql.DB) *Store {
 	return &Store{db: db}
 }
 
-// ErrNotFound is returned when an entity is missing.
 var ErrNotFound = errors.New("not found")
 
 // Chapter represents chapter metadata.
@@ -41,12 +38,10 @@ type Verse struct {
 	Hindi           string `json:"hindi"`
 }
 
-// Ping verifies database connectivity.
 func (s *Store) Ping(ctx context.Context) error {
 	return s.db.PingContext(ctx)
 }
 
-// ListChapters returns all chapters ordered by ID.
 func (s *Store) ListChapters(ctx context.Context) ([]Chapter, error) {
 	rows, err := s.db.QueryContext(
 		ctx,
@@ -75,7 +70,6 @@ func (s *Store) ListChapters(ctx context.Context) ([]Chapter, error) {
 	return chapters, nil
 }
 
-// GetChapterWithVerses fetches a chapter and all of its verses.
 func (s *Store) GetChapterWithVerses(ctx context.Context, chapterID int) (Chapter, []Verse, error) {
 	var ch Chapter
 	row := s.db.QueryRowContext(
@@ -101,7 +95,6 @@ func (s *Store) GetChapterWithVerses(ctx context.Context, chapterID int) (Chapte
 	return ch, verses, nil
 }
 
-// GetVerse retrieves a specific verse identified by chapter and verse numbers.
 func (s *Store) GetVerse(ctx context.Context, chapterID, verseNumber int) (Verse, error) {
 	row := s.db.QueryRowContext(
 		ctx,
@@ -166,7 +159,6 @@ func (s *Store) SearchVerses(ctx context.Context, query, lang string, limit int)
 	return verses, nil
 }
 
-// RandomVerse returns a random verse from the collection.
 func (s *Store) RandomVerse(ctx context.Context) (Verse, error) {
 	row := s.db.QueryRowContext(
 		ctx,
