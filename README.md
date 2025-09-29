@@ -8,7 +8,6 @@ Public REST API for serving Bhagavad Gita chapters and verses with English/Hindi
 - Go 1.22+
 - PostgreSQL 14+ running locally (default `localhost:5432`)
 - `golang-migrate` CLI (for database migrations)
-- (Optional) Python 3 + `datasets` package if using the provided CSV downloader
 
 ## 2. Repository Setup
 ```bash
@@ -38,11 +37,7 @@ make migrate-up
 This runs all SQL files inside `migrations/`. Use `make migrate-down` to roll back.
 
 ## 5. Data Ingestion
-1. Download the latest dataset (optional if you already have `bg.csv`).
-   ```bash
-   python3 download_dataset.py
-   ```
-2. Run the Go ingestion CLI to load verses:
+ Run the Go ingestion CLI to load verses:
    ```bash
    go run ./cmd/ingest --csv bg.csv
    ```
